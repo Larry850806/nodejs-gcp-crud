@@ -1,0 +1,11 @@
+{
+  "name": "nodejs-gcp-crud",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/Larry850806/nodejs-gcp-crud",
+  "author": "Larry Lu <pudding850806@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "google-cloud": "^0.57.0"
+  }
+}
