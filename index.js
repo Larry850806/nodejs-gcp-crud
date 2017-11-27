@@ -1,5 +1,6 @@
 const gcloud = require('google-cloud')
 const express = require('express')
+const bodyParser = require('body-parser')
 
 const datastore = gcloud.datastore({
   projectId: 'confident-abode-186707',
@@ -8,8 +9,13 @@ const datastore = gcloud.datastore({
 
 const app = express()
 
+app.use(bodyParser.text())
+
 // create a new item
-app.post('/api/todo', (req, res) => {})
+app.post('/api/todo', (req, res) => {
+  console.log(req.body)
+  res.json(123)
+})
 
 // get an item
 app.get('/api/todo/:id', (req, res) => {})

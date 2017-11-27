@@ -6,6 +6,7 @@
   "author": "Larry Lu <pudding850806@gmail.com>",
   "license": "MIT",
   "dependencies": {
+    "body-parser": "^1.18.2",
     "express": "^4.16.2",
     "google-cloud": "^0.57.0"
   }
