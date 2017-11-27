@@ -13,8 +13,18 @@ app.use(bodyParser.text())
 
 // create a new item
 app.post('/api/todo', (req, res) => {
-  console.log(req.body)
-  res.json(123)
+  const content = req.body
+
+  const key = datastore.key(['todo'])
+  const entity = {
+    key,
+    data: { content },
+  }
+
+  datastore.insert(entity).then(results => {
+    const id = results[0].mutationResults[0].key.path[0].id
+    res.end(id)
+  })
 })
 
 // get an item
