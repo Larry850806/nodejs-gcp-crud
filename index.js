@@ -1,32 +1,41 @@
 const gcloud = require('google-cloud')
+const express = require('express')
+
 const datastore = gcloud.datastore({
   projectId: 'confident-abode-186707',
   keyFilename: './gcp-crud-c6226a2d54de.json',
 })
 
-async function main() {
-  const key = datastore.key(['Company'])
+const app = express()
 
-  const data = {
-    name: 'Google',
-    location: 'CA',
-  }
+// create a new item
+app.post('/api/todo', (req, res) => {})
 
-  await datastore.save({ key, data })
+// get an item
+app.get('/api/todo/:id', (req, res) => {})
 
-  const receiveData = await datastore.get(key)
-  console.log(receiveData)
-}
+// get all items
+app.get('/api/todo', (req, res) => {})
 
-main().catch(console.log)
+// update an item
+app.put('/api/todo/:id', (req, res) => {})
 
-// const Query = datastore.createQuery('Company')
+// delete an item
+app.delete('/api/todo/:id', (req, res) => {})
 
-// console.log(datastore)
+app.listen(8888)
 
-// var key = datastoreClient.key(['Product', 'Computer'])
-// console.log(key)
+// async function main() {
+//   const key = datastore.key(['Company', 123])
+//   const key2 = datastore.key(['Company', 5076495651307520])
 
-// datastoreClient.get(key, function(err, entity) {
-//   console.log(err || entity)
-// })
+//   const data = {
+//     name: 'Google',
+//     location: 'CA',
+//   }
+
+//   await datastore.save({ key, data })
+
+//   const receiveData = await datastore.get(key2)
+//   console.log(receiveData)
+// }
