@@ -1,6 +1,7 @@
 const gcloud = require('google-cloud')
 const express = require('express')
 const bodyParser = require('body-parser')
+const uuid = require('uuid')
 
 const datastore = gcloud.datastore({
   projectId: 'confident-abode-186707',
@@ -14,21 +15,28 @@ app.use(bodyParser.text())
 // create a new item
 app.post('/api/todo', (req, res) => {
   const content = req.body
+  const id = uuid()
 
-  const key = datastore.key(['todo'])
+  const key = datastore.key(['todo', id])
   const entity = {
     key,
     data: { content },
   }
 
-  datastore.insert(entity).then(results => {
-    const id = results[0].mutationResults[0].key.path[0].id
+  datastore.insert(entity).then(() => {
     res.end(id)
   })
 })
 
 // get an item
-app.get('/api/todo/:id', (req, res) => {})
+app.get('/api/todo/:id', (req, res) => {
+  const { id } = req.params
+  const key = datastore.key(['todo', id])
+  datastore.get(key).then(results => {
+    console.log(results[0])
+  })
+  res.send(id)
+})
 
 // get all items
 app.get('/api/todo', (req, res) => {})
