@@ -4,12 +4,11 @@ const bodyParser = require('body-parser')
 const uuid = require('uuid')
 
 const datastore = gcloud.datastore({
-  projectId: 'confident-abode-186707',
-  keyFilename: './gcp-crud-c6226a2d54de.json',
+  projectId: 'nodejs-crud-187502',
+  keyFilename: './nodejs-crud-50950fbd958a.json',
 })
 
 const app = express()
-
 app.use(bodyParser.text())
 
 // create a new item
@@ -23,7 +22,7 @@ app.post('/api/todo', (req, res) => {
     data: { content },
   }
 
-  datastore.insert(entity).then(() => {
+  datastore.save(entity).then(() => {
     res.end(id)
   })
 })
@@ -33,33 +32,33 @@ app.get('/api/todo/:id', (req, res) => {
   const { id } = req.params
   const key = datastore.key(['todo', id])
   datastore.get(key).then(results => {
-    console.log(results[0])
+    res.send(results[0].content)
   })
-  res.send(id)
 })
 
-// get all items
-app.get('/api/todo', (req, res) => {})
-
 // update an item
-app.put('/api/todo/:id', (req, res) => {})
+app.put('/api/todo/:id', (req, res) => {
+  const newContent = req.body
+  const { id } = req.params
+
+  const key = datastore.key(['todo', id])
+  const entity = {
+    key,
+    data: { content: newContent },
+  }
+
+  datastore.save(entity).then(() => {
+    res.end(id)
+  })
+})
 
 // delete an item
-app.delete('/api/todo/:id', (req, res) => {})
+app.delete('/api/todo/:id', (req, res) => {
+  const { id } = req.params
+  const key = datastore.key(['todo', id])
+  datastore.delete(key).then(results => {
+    res.send(id)
+  })
+})
 
 app.listen(8888)
-
-// async function main() {
-//   const key = datastore.key(['Company', 123])
-//   const key2 = datastore.key(['Company', 5076495651307520])
-
-//   const data = {
-//     name: 'Google',
-//     location: 'CA',
-//   }
-
-//   await datastore.save({ key, data })
-
-//   const receiveData = await datastore.get(key2)
-//   console.log(receiveData)
-// }
